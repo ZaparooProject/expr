@@ -13,6 +13,7 @@ import (
 	. "github.com/expr-lang/expr/checker/nature"
 	"github.com/expr-lang/expr/conf"
 	"github.com/expr-lang/expr/file"
+	"github.com/expr-lang/expr/internal/staticmethod"
 	"github.com/expr-lang/expr/parser"
 	. "github.com/expr-lang/expr/vm"
 	"github.com/expr-lang/expr/vm/runtime"
@@ -783,7 +784,7 @@ func (c *compiler) CallNode(node *ast.CallNode) {
 		switch callee := node.Callee.(type) {
 		case *ast.MemberNode:
 			if prop, ok := callee.Property.(*ast.StringNode); ok {
-				if _, ok = callee.Node.Type().MethodByName(prop.Value); ok && callee.Node.Type().Kind() != reflect.Interface {
+				if _, ok = staticmethod.TypeByName(callee.Node.Type(), prop.Value); ok && callee.Node.Type().Kind() != reflect.Interface {
 					fnInOffset = 1
 					fnNumIn--
 				}

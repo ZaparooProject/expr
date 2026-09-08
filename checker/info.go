@@ -5,6 +5,7 @@ import (
 
 	"github.com/expr-lang/expr/ast"
 	. "github.com/expr-lang/expr/checker/nature"
+	"github.com/expr-lang/expr/internal/staticmethod"
 	"github.com/expr-lang/expr/vm"
 )
 
@@ -39,7 +40,7 @@ func MethodIndex(c *Cache, env Nature, node ast.Node) (bool, int, string) {
 		if name, ok := n.Property.(*ast.StringNode); ok {
 			base := n.Node.Type()
 			if base != nil && base.Kind() != reflect.Interface {
-				if m, ok := base.MethodByName(name.Value); ok {
+				if m, ok := staticmethod.TypeByName(base, name.Value); ok {
 					return true, m.Index, name.Value
 				}
 			}

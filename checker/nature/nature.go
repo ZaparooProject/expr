@@ -7,6 +7,7 @@ import (
 
 	"github.com/expr-lang/expr/builtin"
 	"github.com/expr-lang/expr/internal/deref"
+	"github.com/expr-lang/expr/internal/staticmethod"
 )
 
 var (
@@ -438,7 +439,7 @@ func (n *Nature) All(c *Cache) map[string]Nature {
 	}
 
 	for i := 0; i < n.NumMethods(c); i++ {
-		method := n.Type.Method(i)
+		method := staticmethod.TypeByIndex(n.Type, i)
 		nt := c.FromType(method.Type)
 		if nt.TypeData == nil {
 			nt.TypeData = new(TypeData)

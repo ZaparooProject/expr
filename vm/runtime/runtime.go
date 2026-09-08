@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/expr-lang/expr/internal/deref"
+	"github.com/expr-lang/expr/internal/staticmethod"
 )
 
 var fieldCache sync.Map
@@ -27,7 +28,7 @@ func Fetch(from, i any) any {
 	// Methods can be defined on any type.
 	if v.NumMethod() > 0 {
 		if methodName, ok := i.(string); ok {
-			method := v.MethodByName(methodName)
+			method := staticmethod.ValueByName(v, methodName)
 			if method.IsValid() {
 				return method.Interface()
 			}
@@ -153,7 +154,7 @@ func FetchMethod(from any, method *Method) any {
 	kind := v.Kind()
 	if kind != reflect.Invalid {
 		// Methods can be defined on any type, no need to dereference.
-		method := v.Method(method.Index)
+		method := staticmethod.ValueByIndex(v, method.Index)
 		if method.IsValid() {
 			return method.Interface()
 		}

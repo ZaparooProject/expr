@@ -1,0 +1,22 @@
+name: Static method profile
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+        with:
+          go-version: '1.27.1'
+          cache: false
+      - name: Default behavior
+        run: go test -race ./...
+      - name: Opt-in profile and upgrade guards
+        run: go test -race -tags=expr_static_methods ./internal/staticmethod

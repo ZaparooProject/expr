@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	"github.com/expr-lang/expr/internal/deref"
+	"github.com/expr-lang/expr/internal/staticmethod"
 )
 
 func fieldName(fieldName string, tag reflect.StructTag) (string, bool) {
@@ -204,7 +205,7 @@ func (s *methodset) method(c *Cache, name string) *method {
 		return m
 	}
 	for ; s.idx < s.numMethod; s.idx++ {
-		rm := s.rType.Method(s.idx)
+		rm := staticmethod.TypeByIndex(s.rType, s.idx)
 		if !rm.IsExported() {
 			continue
 		}

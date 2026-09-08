@@ -8,6 +8,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/expr-lang/expr/internal/deref"
+	"github.com/expr-lang/expr/internal/staticmethod"
 	"github.com/expr-lang/expr/vm/runtime"
 )
 
@@ -562,7 +563,7 @@ func get(params ...any) (out any, err error) {
 	// Methods can be defined on any type.
 	if v.NumMethod() > 0 {
 		if methodName, ok := i.(string); ok {
-			method := v.MethodByName(methodName)
+			method := staticmethod.ValueByName(v, methodName)
 			if method.IsValid() {
 				return method.Interface(), nil
 			}
