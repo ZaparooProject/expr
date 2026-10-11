@@ -16,7 +16,7 @@ import (
 )
 
 func TestProfileUpgradeGate(t *testing.T) {
-	if runtime.Version() != "go1.27.1" {
+	if runtime.Version() != "go1.27.2" {
 		t.Fatalf("Go toolchain changed: %s; regenerate and differentially validate static method profile", runtime.Version())
 	}
 	root := filepath.Join("..", "..")
